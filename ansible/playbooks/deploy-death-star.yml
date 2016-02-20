@@ -1,0 +1,13 @@
+---
+
+- name: "Deploy Death Star"
+  hosts: tag_Type_death-star
+  serial: 1
+
+  roles:
+    - role: Datadog.datadog
+      become: yes
+      become_method: sudo
+
+    - role: death-star
+      application_version: "{{ version }}"

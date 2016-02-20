@@ -1,0 +1,38 @@
+---
+
+- name: Create applicative group
+  become: yes
+  become_method: sudo
+  group:
+    name: death-star
+    state: present
+
+- name: Add applicative user
+  become: yes
+  become_method: sudo
+  user:
+    name: death-star
+    group: death-star
+    shell: /bin/bash
+    home: /home/death-star
+    state: present
+
+- name: "Set up front-end delivery directory"
+  become: yes
+  become_method: sudo
+  file:
+    path: "{{ delivery_directory }}/{{ application_version }}/front"
+    state: directory
+    owner: death-star
+    group: death-star
+    mode: 0775
+
+- name: "Set up back-end delivery directory"
+  become: yes
+  become_method: sudo
+  file:
+    path: "{{ delivery_directory }}/{{ application_version }}/back"
+    state: directory
+    owner: death-star
+    group: death-star
+    mode: 0775

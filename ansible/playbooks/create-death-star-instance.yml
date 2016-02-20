@@ -1,0 +1,11 @@
+---
+
+- name: Create Death Star instance on ec2
+  hosts: localhost
+  roles:
+    - role: create-ec2-instance
+      instance_name: "{{ name }}"
+      instance_type: death-star
+      instance_group: death-star-instances
+      instance_role: death-star
+      instance_key_name: death-star

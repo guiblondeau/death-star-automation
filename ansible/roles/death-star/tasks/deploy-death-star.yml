@@ -1,0 +1,23 @@
+---
+
+- name: Check if different version
+  stat:
+    path: "{{ delivery_directory}}/current"
+  register: current_link
+  changed_when: not current_link or not current_link.stat or current_link.stat.lnk_source != version_delivery_directory
+
+- debug:
+    var: current_link
+
+- debug:
+    var: version_delivery_directory
+
+#- name: Front-end | Download front-end zip from S3
+
+#- name: Front-end | Unzip
+
+#- name: Front-end | Delete zip file
+
+#- name: Back-end | Check if different version
+
+#- name: Back-end | Download JAR

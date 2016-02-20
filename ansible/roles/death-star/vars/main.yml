@@ -1,0 +1,4 @@
+---
+
+delivery_directory: /srv/death-star
+version_delivery_directory: "{{ delivery_directory }}/{{ application_version }}"

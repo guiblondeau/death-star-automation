@@ -1,0 +1,4 @@
+application/WebApiApplication.class
+application/WebApiMain.class
+version/VersionServerResource.class
+version/VersionRepresentation.class

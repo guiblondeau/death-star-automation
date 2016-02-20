@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html ng-app="deathStar">
+
+<head>
+    <title>Death star</title>
+    <link rel="stylesheet" href="styles/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body ng-controller="deathStarController">
+
+<div class="deathStarContainer">
+
+    <nav class="header navbar navbar-inverse">
+        <div class="container-fluid">
+            <h1 class="text-center"><font color="white">Death Star</font></h1>
+        </div>
+    </nav>
+
+    <div class="death-star-body">
+        <div class="container-fluid text-right">
+            <font color="white">
+                <h1>This weapon can destruct a planet</h1>
+            </font>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="text-center well">
+            <font color="white">
+                Version: {{ version }}
+            </font>
+        </div>
+    </div>
+
+</div>
+
+<script type="application/javascript" src="scripts/jquery.min.js"></script>
+<script type="application/javascript" src="./scripts/bootstrap.min.js"></script>
+<script type="application/javascript" src="./scripts/angular.min.js"></script>
+<script type="application/javascript" src="./scripts/lodash.min.js"></script>
+<script type="application/javascript" src="./scripts/deathStar.js"></script>
+<script type="application/javascript" src="./scripts/deathStarController.js"></script>
+
+</body>
+</html>
