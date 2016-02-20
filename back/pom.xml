@@ -8,6 +8,14 @@
     <artifactId>death-star-automation</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <url>https://github.com/guiblondeau/death-star-automation</url>
+    <scm>
+        <url>https://github.com/guiblondeau/death-star-automation</url>
+        <connection>scm:git:git@github.com:guiblondeau/death-star-automation.git</connection>
+        <developerConnection>scm:git:git@github.com:guiblondeau/death-star-automation.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
     <properties>
         <restlet-version>2.3.5</restlet-version>
     </properties>
