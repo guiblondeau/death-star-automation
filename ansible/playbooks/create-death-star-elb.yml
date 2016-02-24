@@ -1,0 +1,23 @@
+---
+
+- name: Create Death Star ELB
+  hosts: localhost
+
+  tasks:
+    - name: Create elb
+      ec2_elb_lb:
+        state: present
+        name: "death-star-elb"
+        region: "eu-west-1"
+        subnets: subnet-aa00f5dd
+        security_group_ids: "sg-4c391f28"
+        connection_draining_timeout: 10
+        cross_az_load_balancing: yes
+        listeners:
+          - protocol: http
+            load_balancer_port: 80
+            instance_port: 9000
+        health_check:
+          ping_protocol: tcp
+          ping_port: 9000
+      failed_when: false

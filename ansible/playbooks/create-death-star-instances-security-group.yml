@@ -1,0 +1,25 @@
+---
+
+- name: Create Death Star instance security group
+  hosts: localhost
+
+  tasks:
+    - name: Get local public ip address
+      uri:
+        url: "https://api.ipify.org?format=json"
+      register: local_ip
+    - name: Configure security group
+      ec2_group:
+        name: death-star-instances
+        description: death-star-instances
+        vpc_id: vpc-a36882c6
+        region: eu-west-1
+        rules:
+          - proto: tcp
+            from_port: 9000
+            to_port: 9000
+            group_name: death-star-elb
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: "{{ local_ip.json.ip }}/32"

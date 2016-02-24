@@ -1,0 +1,20 @@
+---
+
+- name: Play 1
+  hosts: localhost
+
+  tasks:
+    - name: Create file
+      file:
+        path: /tmp/test.txt
+        state: touch
+        owner: guillaume
+        group: guillaume-restlet
+        mode: 0664
+    - name: Stat created file
+      stat:
+        path: /tmp/test.txt
+      register: stat_file
+    - name: Print stat
+      debug:
+        var: stat_file.stat.exists

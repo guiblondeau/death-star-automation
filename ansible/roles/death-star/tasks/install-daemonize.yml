@@ -1,0 +1,37 @@
+---
+
+- name: Daemonize | Install gcc
+  yum:
+    name: gcc
+    state: latest
+
+- name: Daemonize | Install git
+  yum:
+    name: git
+    state: latest
+
+- name: Daemonize | Install  Git repository
+  git:
+    repo: git://github.com/bmc/daemonize.git
+    dest: /tmp/daemonize
+    accept_hostkey: yes
+
+- name: Daemonize | Execute "configure"
+  command: /tmp/daemonize/configure
+  args:
+    chdir: /tmp/daemonize
+
+- name: Daemonize | Execute "make"
+  command: make
+  args:
+    chdir: /tmp/daemonize
+
+- name: Daemonize | Execute "make install"
+  command: make install
+  args:
+    chdir: /tmp/daemonize
+
+- name: Daemonize | Clean tmp directory
+  file:
+    path: /tmp/daemonize
+    state: absent

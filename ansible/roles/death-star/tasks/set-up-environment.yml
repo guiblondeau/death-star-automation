@@ -1,5 +1,19 @@
 ---
 
+- name: Remove openJDK 7
+  become: yes
+  become_method: sudo
+  yum:
+    name: java-1.7.0-openjdk
+    state: absent
+
+- name: Install openJDK 8
+  become: yes
+  become_method: sudo
+  yum:
+    name: java-1.8.0-openjdk
+    state: present
+
 - name: Create applicative group
   become: yes
   become_method: sudo
@@ -7,7 +21,7 @@
     name: death-star
     state: present
 
-- name: Add applicative user
+- name: Create applicative user
   become: yes
   become_method: sudo
   user:
@@ -16,6 +30,34 @@
     shell: /bin/bash
     home: /home/death-star
     state: present
+
+- name: Create log directory
+  become: yes
+  become_method: sudo
+  file:
+      path: "/var/log/death-star"
+      state: directory
+      owner: death-star
+      group: death-star
+      mode: 0775
+
+- name: Deamonize | Check daemonize installed
+  stat:
+    path: /usr/local/sbin/daemonize
+  register: daemonize_file
+  changed_when: false # We always want this task to be "OK" (not "changed")
+
+- name: Deamonize | Install daemonize
+  become: yes
+  become_method: sudo
+  include: install-daemonize.yml
+  when: not daemonize_file.stat.exists
+
+- name: Deamonize | Check daemonize installed
+  stat:
+    path: /usr/local/sbin/daemonize
+  register: daemonize_file
+  changed_when: false # We always want this task to be "OK" (not "changed")
 
 - name: "Set up front-end delivery directory"
   become: yes

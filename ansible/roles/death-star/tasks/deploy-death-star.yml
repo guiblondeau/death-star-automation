@@ -1,23 +1,67 @@
 ---
 
+- action: ec2_facts
+
 - name: Check if different version
   stat:
     path: "{{ delivery_directory}}/current"
   register: current_link
-  changed_when: not current_link or not current_link.stat or current_link.stat.lnk_source != version_delivery_directory
+  changed_when: not current_link or not current_link.stat or not current_link.stat.exists or current_link.stat.lnk_source != version_delivery_directory
+  notify: "Restart service"
 
-- debug:
-    var: current_link
+- name: Detach from ELB if version changed
+  local_action:
+    module: ec2_elb
+    ec2_elbs: "death-star-elb"
+    instance_id: "{{ ansible_ec2_instance_id }}"
+    region: "eu-west-1"
+    state: absent
+  when: current_link.changed
 
-- debug:
-    var: version_delivery_directory
+- name: Deploy front-end
+  include: deploy-front.yml
+  when: current_link.changed
 
-#- name: Front-end | Download front-end zip from S3
+- name: Deploy back-end
+  include: deploy-back.yml
+  when: current_link.changed
 
-#- name: Front-end | Unzip
+- name: Update symlink
+  become: yes
+  become_method: sudo
+  file:
+    path: "{{ delivery_directory}}/current"
+    src: "{{ version_delivery_directory }}"
+    state: link
+    owner: death-star
+    group: death-star
+  notify: "Restart service"
 
-#- name: Front-end | Delete zip file
+- name: Back-end | Upload service script
+  become: yes
+  become_method: sudo
+  template:
+    src: service.sh
+    dest: "/etc/init.d/death-star"
+    owner: root
+    group: root
+    mode: 0755
+  notify: "Restart service"
 
-#- name: Back-end | Check if different version
+- meta: flush_handlers
 
-#- name: Back-end | Download JAR
+- name: Ensure service is started
+  become: yes
+  become_method: sudo
+  service:
+    name: death-star
+    state: started
+
+- name: Attach from ELB if version changed
+  local_action:
+    module: ec2_elb
+    ec2_elbs: "death-star-elb"
+    instance_id: "{{ ansible_ec2_instance_id }}"
+    region: "eu-west-1"
+    state: present
+  when: current_link.changed

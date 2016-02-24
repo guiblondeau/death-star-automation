@@ -1,0 +1,8 @@
+---
+
+- name: Restart service
+  become: yes
+  become_method: sudo
+  service:
+    name: death-star
+    state: restarted

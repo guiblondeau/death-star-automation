@@ -1,0 +1,11 @@
+---
+
+- name: Back-end | Download JAR
+  become: yes
+  become_method: sudo
+  s3:
+    region: "eu-west-1"
+    bucket: "death-star-automation"
+    object: "{{ application_version }}/back/death-star-automation-{{ application_version }}.jar"
+    dest: "{{ back_delivery_directory }}/death-star-automation.jar"
+    mode: "get"

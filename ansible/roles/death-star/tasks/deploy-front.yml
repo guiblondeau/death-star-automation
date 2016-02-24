@@ -1,0 +1,29 @@
+---
+
+- s3: bucket=death-star-automation region=eu-west-1 mode=list
+- name: Front-end | Download front-end zip from S3
+  become: yes
+  become_method: sudo
+  s3:
+    bucket: "death-star-automation"
+    object: "{{ application_version }}/front/death-star-front-{{ application_version }}.zip"
+    dest: "{{ front_delivery_directory }}/death-star-front-{{ application_version }}.zip"
+    mode: "get"
+
+- name: Front-end | Unzip
+  become: yes
+  become_method: sudo
+  unarchive:
+    src: "{{ front_delivery_directory }}/death-star-front-{{ application_version }}.zip"
+    dest: "{{ front_delivery_directory }}"
+    copy: no
+    owner: death-star
+    group: death-star
+    mode: u=rwX,g=rX,o=rX
+
+- name: Front-end | Delete zip file
+  become: yes
+  become_method: sudo
+  file:
+    path: "{{ front_delivery_directory }}/death-star-front-{{ application_version }}.zip"
+    state: "absent"

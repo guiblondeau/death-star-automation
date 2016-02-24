@@ -2,3 +2,5 @@
 
 delivery_directory: /srv/death-star
 version_delivery_directory: "{{ delivery_directory }}/{{ application_version }}"
+front_delivery_directory: "{{ version_delivery_directory }}/front"
+back_delivery_directory: "{{ version_delivery_directory}}/back"
